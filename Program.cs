@@ -254,10 +254,13 @@ class Program
             enterHouse.AddChoice("Go upstairs", goUpstairs);
             enterHouse.AddChoice("Leave the house", crossroads);
 
+            Direction failEnteringHouse = new Direction("Locked Out", "You'd need a melee weapon to open these boards.");
+            failEnteringHouse.AddChoice("Leave house", crossroads);
+
             if (player.Class == "melee")
                 boardedUpHouse.AddChoice("Enter the house", breakBoards);
             else
-                boardedUpHouse.AddChoice("Enter the house", new Direction("Locked Out", "You'd need a melee weapon to open these boards."));
+                boardedUpHouse.AddChoice("Enter the house", failEnteringHouse);
             boardedUpHouse.AddChoice("Leave it alone", crossroads);
 
             breakBoards.AddChoice("Inspect the kitchen", inspectKitchen);
