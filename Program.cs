@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 class Program
 {
+
     static void Main()
     {
         bool playAgain = true;
@@ -203,11 +204,28 @@ class Program
                 "'Now c'mon, drink, warm your bones, you're practically on the verge of the bite.'"
             );
 
-            Direction denydrinkagain = new Direction(
-                "Deny the drink again",
-                "After denying the drink, you feel the butt of a gun bash you in the back of the head. " +
-                "Your vision blacks out and you awaken trapped in a cage awaiting to be sold to the elites of the wasteland.\n\nGAME OVER."
-            );
+            Direction denydrinkagain;
+
+            bool tendrilMonsterIsLoose = false;
+
+            if (tendrilMonsterIsLoose)
+            {
+                denydrinkagain = new Direction(
+                    "Deny the drink again",
+                    "After denying the drink, you feel the butt of a gun bash you in the back of the head. " +
+                    "Your vision blacks out and you awaken trapped in a cage awaiting to be sold to the elites of the wasteland.\n\nGAME OVER."
+                );
+            }
+            else {
+                denydrinkagain = new Direction(
+                    "Deny the drink again",
+                    "Suddenly, there is a loud crashing sound followed by shouts of shock and horror. A giant, tentacled monster breaks down the door to their fort." +
+                    "Hans screams as a tendril wraps around him and flings him away. You hide under the table and eventually the monster leaves." +
+                    "You plunder the now empty base and stay there the night. The next day, you have a strange intuition. You believe that there's something important somewhere near the crossroads."
+                );
+
+                denydrinkagain.AddChoice("Return to the crossroads", crossroads);
+            }
 
             Direction Takedrinkagain = new Direction(
                 "Take the drink and sip",
@@ -230,6 +248,11 @@ class Program
                 "You turn to run, but the mass grabs you using one of its tendrils, keeping you held in place. The attic collapses onto you, crushing you under debris and snow.\n\nGAME OVER."
             );
 
+            Direction fleeFromAtticSuccess = new Direction(
+               "Flee the Attic",
+               "You turn to run, but the mass grabs you using one of its tendrils, keeping you held in place. You kick at the tendril with all your might and it recoils. You sprint towards the exit of the rotting house."
+           );
+
             Direction shootMassAttic = new Direction(
                 "Shoot the Mass",
                 "You fire at the mass, but it barely reacts. " +
@@ -237,7 +260,18 @@ class Program
             );
 
             atticCombat.AddChoice("Approach the mass", joinTheMassAttic);
-            atticCombat.AddChoice("Flee", fleeFromAtticFinal);
+            var rand = new Random();
+
+
+            if (rand.NextDouble() < 0.5)
+            {
+                atticCombat.AddChoice("Flee", fleeFromAtticFinal);
+            }
+            else {
+                atticCombat.AddChoice("Flee", fleeFromAtticSuccess);
+                fleeFromAtticSuccess.AddChoice("Keep running back to the crossroads", crossroads);
+                tendrilMonsterIsLoose = true;
+            }
             if (player.Class == "firearm")
                 atticCombat.AddChoice("Shoot the mass", shootMassAttic);
 
@@ -257,11 +291,20 @@ class Program
             Direction failEnteringHouse = new Direction("Locked Out", "You'd need a melee weapon to open these boards.");
             failEnteringHouse.AddChoice("Leave house", crossroads);
 
-            if (player.Class == "melee")
-                boardedUpHouse.AddChoice("Enter the house", breakBoards);
-            else
-                boardedUpHouse.AddChoice("Enter the house", failEnteringHouse);
-            boardedUpHouse.AddChoice("Leave it alone", crossroads);
+            if (tendrilMonsterIsLoose)
+            {
+                boardedUpHouse.AddChoice("The house is completely gone... All that remains are some wooden scraps on the ground and the body of an old man. You have no choice but to go back.", crossroads);
+            }
+            else {
+                if (player.Class == "melee")
+                    boardedUpHouse.AddChoice("Enter the house", breakBoards);
+                else
+                    boardedUpHouse.AddChoice("Enter the house", failEnteringHouse);
+
+
+                boardedUpHouse.AddChoice("Leave it alone", crossroads);
+            }
+
 
             breakBoards.AddChoice("Inspect the kitchen", inspectKitchen);
             breakBoards.AddChoice("Go to the basement", inspectBasement);
