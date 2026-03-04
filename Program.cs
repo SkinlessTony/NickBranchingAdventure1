@@ -230,6 +230,11 @@ class Program
                 "You turn to run, but the mass grabs you using one of its tendrils, keeping you held in place. The attic collapses onto you, crushing you under debris and snow.\n\nGAME OVER."
             );
 
+            Direction fleeFromAtticSuccess = new Direction(
+               "Flee the Attic",
+               "You turn to run, but the mass grabs you using one of its tendrils, keeping you held in place. You kick at the tendril with all your might and it recoils. You sprint towards the exit of the rotting house."
+           );
+
             Direction shootMassAttic = new Direction(
                 "Shoot the Mass",
                 "You fire at the mass, but it barely reacts. " +
@@ -237,7 +242,19 @@ class Program
             );
 
             atticCombat.AddChoice("Approach the mass", joinTheMassAttic);
-            atticCombat.AddChoice("Flee", fleeFromAtticFinal);
+            var rand = new Random();
+
+            bool tendrilMonsterIsLoose = false;
+
+            if (rand.NextDouble() < 0.5)
+            {
+                atticCombat.AddChoice("Flee", fleeFromAtticFinal);
+            }
+            else {
+                atticCombat.AddChoice("Flee", fleeFromAtticSuccess);
+                fleeFromAtticSuccess.AddChoice("Keep running back to the crossroads", crossroads);
+                tendrilMonsterIsLoose = true;
+            }
             if (player.Class == "firearm")
                 atticCombat.AddChoice("Shoot the mass", shootMassAttic);
 
