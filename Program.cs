@@ -343,6 +343,17 @@ class Program
             forwardOption2.AddChoice("Hide in nearby ruins", hideInRuins);
             forwardOption2.AddChoice("Keep running", keepRunning);
             frozenRoad.AddChoice("Enter the base", enterthebase);
+
+            Direction feignInsanity = new Direction(
+           "Feign Insanity",
+           "Something in your gut tells you that these men mean harm to you. You look at the men listlessly. You open your mouth and close it. Then you start mumbling to yourself and babbline, running in every which way."
+           + "The men are clearly confused. You limp away. Your feigned mental and physical weakness have allowed you to escape. After a long walk, you return to the crossroads...");
+
+            frozenRoad.AddChoice("Feign insanity", feignInsanity);
+
+            feignInsanity.AddChoice("Continue", crossroads);
+
+
             enterthebase.AddChoice("Take the mug and drink", takedrink);
             enterthebase.AddChoice("Deny the drink", denydrink);
             denydrink.AddChoice("Deny again", denydrinkagain);
