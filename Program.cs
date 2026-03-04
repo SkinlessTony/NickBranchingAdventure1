@@ -381,10 +381,11 @@ class Program
                 Console.WriteLine("Choose an option:");
                 List<KeyValuePair<string, Direction>> availableChoices = new List<KeyValuePair<string, Direction>>();
                 foreach (var choice in current.Choices)
-                    if (!(current == crossroads && visited.Contains(choice.Value.Name)))
-                        availableChoices.Add(choice);
+                {
+                    availableChoices.Add(choice);
+                }
 
-                for (int i = 0; i < availableChoices.Count; i++)
+                    for (int i = 0; i < availableChoices.Count; i++)
                     Console.WriteLine($"{i + 1}. {availableChoices[i].Key}");
 
                 int choiceIndex = 0;
